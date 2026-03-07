@@ -12,7 +12,11 @@ categories = ["database"]
 keywords = ["sea-orm", "sqlite", "postgres", "metadata", "frecency"]
 
 [lints.clippy]
-pedantic = "warn"
+pedantic = { level = "warn", priority = -1 }
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+cast_precision_loss = "allow"
+doc_markdown = "allow"
 
 [dependencies]
 sea-orm = { version = "1", features = [

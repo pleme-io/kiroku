@@ -17,7 +17,7 @@
 //! ```
 
 mod db;
-mod frecency;
+pub mod frecency;
 mod store;
 
 pub use db::DbCli;

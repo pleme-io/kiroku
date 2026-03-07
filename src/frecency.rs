@@ -44,22 +44,19 @@ pub async fn ensure_table(db: &DatabaseConnection) -> Result<(), DbErr> {
 pub async fn record_access(db: &DatabaseConnection, item_id: &str) -> Result<(), DbErr> {
     let existing = record::Entity::find_by_id(item_id).one(db).await?;
 
-    match existing {
-        Some(rec) => {
-            let count = rec.access_count;
-            let mut active: record::ActiveModel = rec.into();
-            active.access_count = Set(count + 1);
-            active.last_access_at = Set(chrono::Utc::now().naive_utc());
-            active.update(db).await?;
-        }
-        None => {
-            let new = record::ActiveModel {
-                item_id: Set(item_id.to_string()),
-                access_count: Set(1),
-                last_access_at: Set(chrono::Utc::now().naive_utc()),
-            };
-            record::Entity::insert(new).exec(db).await?;
-        }
+    if let Some(rec) = existing {
+        let count = rec.access_count;
+        let mut active: record::ActiveModel = rec.into();
+        active.access_count = Set(count + 1);
+        active.last_access_at = Set(chrono::Utc::now().naive_utc());
+        active.update(db).await?;
+    } else {
+        let new = record::ActiveModel {
+            item_id: Set(item_id.to_string()),
+            access_count: Set(1),
+            last_access_at: Set(chrono::Utc::now().naive_utc()),
+        };
+        record::Entity::insert(new).exec(db).await?;
     }
 
     Ok(())
@@ -72,11 +69,10 @@ pub async fn get_stats(db: &DatabaseConnection, item_id: &str) -> (u32, f64) {
         .await
         .ok()
         .flatten()
-        .map(|m| {
-            let frecency = calculate_frecency(m.access_count as u32, m.last_access_at);
-            (m.access_count as u32, frecency)
+        .map_or((0, 0.0), |m| {
+            let frecency = calculate_frecency(m.access_count.cast_unsigned(), m.last_access_at);
+            (m.access_count.cast_unsigned(), frecency)
         })
-        .unwrap_or((0, 0.0))
 }
 
 /// Get frecency scores for all tracked items.
@@ -87,7 +83,7 @@ pub async fn all_frecency(db: &DatabaseConnection) -> HashMap<String, f64> {
         .unwrap_or_default()
         .into_iter()
         .map(|m| {
-            let f = calculate_frecency(m.access_count as u32, m.last_access_at);
+            let f = calculate_frecency(m.access_count.cast_unsigned(), m.last_access_at);
             (m.item_id, f)
         })
         .collect()
