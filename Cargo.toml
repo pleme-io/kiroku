@@ -1,0 +1,31 @@
+[package]
+name = "kiroku"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89.0"
+description = "Kiroku (記録) — SeaORM metadata store with dual sync/async runtime and DB CLI helpers"
+homepage = "https://github.com/pleme-io/kiroku"
+repository = "https://github.com/pleme-io/kiroku"
+readme = "README.md"
+license = "MIT"
+categories = ["database"]
+keywords = ["sea-orm", "sqlite", "postgres", "metadata", "frecency"]
+
+[lints.clippy]
+pedantic = "warn"
+
+[dependencies]
+sea-orm = { version = "1", features = [
+  "sqlx-sqlite",
+  "sqlx-postgres",
+  "runtime-tokio-native-tls",
+  "macros",
+  "with-chrono",
+] }
+tokio = { version = "1", features = ["rt-multi-thread"] }
+chrono = "0.4"
+tracing = "0.1"
+
+[dev-dependencies]
+tempfile = "3"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
