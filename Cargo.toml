@@ -1,9 +1,9 @@
 [package]
-name = "kiroku"
+name = "choubo"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.89.0"
-description = "Kiroku (記録) — SeaORM metadata store with dual sync/async runtime and DB CLI helpers"
+description = "Choubo (帳簿) — SeaORM metadata store with dual sync/async runtime and DB CLI helpers"
 homepage = "https://github.com/pleme-io/kiroku"
 repository = "https://github.com/pleme-io/kiroku"
 readme = "README.md"

@@ -236,6 +236,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
+name = "choubo"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "sea-orm",
+ "tempfile",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "chrono"
 version = "0.4.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -861,17 +872,6 @@ checksum = "b49715b7073f385ba4bc528e5747d02e66cb39c6146efb66b781f131f0fb399c"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "kiroku"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "sea-orm",
- "tempfile",
- "tokio",
- "tracing",
 ]
 
 [[package]]

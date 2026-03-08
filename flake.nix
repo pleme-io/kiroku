@@ -1,5 +1,5 @@
 {
-  description = "Kiroku (記録) — SeaORM metadata store with dual sync/async runtime";
+  description = "Choubo (帳簿) — SeaORM metadata store with dual sync/async runtime";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -22,7 +22,7 @@
 
       props = builtins.fromTOML (builtins.readFile ./Cargo.toml);
       version = props.package.version;
-      pname = "kiroku";
+      pname = "choubo";
 
       package = pkgs.rustPlatform.buildRustPackage {
         inherit pname version;
@@ -38,12 +38,12 @@
     in
     {
       packages.${system} = {
-        kiroku = package;
+        choubo = package;
         default = package;
       };
 
       overlays.default = final: prev: {
-        kiroku = self.packages.${final.system}.default;
+        choubo = self.packages.${final.system}.default;
       };
 
       devShells.${system}.default = pkgs.mkShellNoCC {
